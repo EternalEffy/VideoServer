@@ -7,10 +7,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class Server {
-        private static Socket clientSocket;
-        private static ServerSocket server;
-        private static DataInputStream inStream;
-        private static DataOutputStream outStream;
+        private Socket clientSocket;
+        private ServerSocket server;
+        private DataInputStream inStream;
+        private DataOutputStream outStream;
         private int port;
 
         public void setPort(int port){
@@ -38,7 +38,8 @@ public class Server {
                     System.out.println(ServerMessages.MESSAGE_REQUEST+jsonObject.getString("request")+" "+jsonObject.getString("name")+ ServerMessages.MESSAGE_RESULT_YES);
                     switch (jsonObject.getString("request")){
                         case Requests.getVideo:
-                            outStream.writeUTF(new JSONObject("{\"request\":\"OK\",\"video\":\"65\"}").toString());
+                            File f = new File(String.valueOf(Paths.get(jsonObject.getString("name"))));
+                            outStream.writeUTF(new JSONObject("{\"request\":\"OK\",\"video\":\""+f.length()+"\"}").toString());
                             outStream.flush();
                             byte[] array = Files.readAllBytes(Paths.get(jsonObject.getString("name")));
                             outStream.write(array);

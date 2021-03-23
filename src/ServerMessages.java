@@ -1,9 +1,10 @@
 public class ServerMessages {
     public static final String
-            MESSAGE_ACCESS = "Подключение установлено. Клиент подключился с ip-адреса: ",
-            USER_MESSAGE_ACCESS = " успешно подключился.",
-            MESSAGE_END = "Клиент отключился. Сервер завершен.",
-            MESSAGE_REQUEST = "Клиент совершил запрос: ",
-            MESSAGE_RESULT_YES = " успешно",
-            MESSAGE_RESULT_NO = "ошибка. Код ошибки 110.";
+            MESSAGE_ACCESS = "The connection is established. The client connected from an ip address: ",
+            USER_MESSAGE_ACCESS = " successfully connected.",
+            MESSAGE_END = "Server is finished.",
+            MESSAGE_CLIENT_CLOSE = "Client disconnected.",
+            MESSAGE_REQUEST = "The client send a request: ",
+            MESSAGE_RESULT_YES = " successful",
+            MESSAGE_RESULT_NO = "error. Error code 110";
 }

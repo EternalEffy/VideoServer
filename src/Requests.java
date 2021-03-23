@@ -1,3 +1,3 @@
 public class Requests {
-    public static final String getVideo = "getVideo";
+    public static final String getFile = "getFile",stop = "stop";
 }

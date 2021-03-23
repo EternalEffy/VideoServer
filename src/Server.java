@@ -1,10 +1,7 @@
 import org.json.JSONObject;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class Server {
         private Socket clientSocket;
@@ -27,8 +24,9 @@ public class Server {
 
         public void loadServer() {
             try {
-                System.out.println("Server started");
-                System.out.println(port);
+                while (true) {
+                    System.out.println("Server started");
+                    System.out.println(port);
                     clientSocket = server.accept();
                     if (clientSocket.isConnected()) {
                         System.out.println(ServerMessages.MESSAGE_ACCESS + clientSocket.getInetAddress());
@@ -43,9 +41,9 @@ public class Server {
                         switch (jsonObject.getString("request")) {
                             case Requests.getFile:
                                 try {
-                                    System.out.println("Making file object name: "+jsonObject.getString("name"));
-                                    File f = new File(new File(Server.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent()+"\\"+jsonObject.getString("name"));
-                                    System.out.println(f.getPath());
+                                    System.out.println("Making file object name: " + jsonObject.getString("name"));
+                                    File f = new File(new File(Server.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent() + "/" + jsonObject.getString("name"));
+                                    System.out.println("Path: "+f.getPath());
                                     if (f.exists()) {
                                         System.out.println("File exist. Sending response to client");
                                         outStream.writeUTF(new JSONObject("{\"request\":\"OK\",\"file\":\"" + f.length() + "\"}").toString());
@@ -53,18 +51,17 @@ public class Server {
                                         buffer = new byte[(int) f.length()];
                                         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(f));
                                         bis.read(buffer, 0, buffer.length);
-                                        System.out.println("Start sending file "+f.getName());
+                                        System.out.println("Start sending file " + f.getName());
                                         outStream.write(buffer, 0, buffer.length);
                                         outStream.flush();
                                         System.out.println("File was send successful");
-                                    }
-                                    else{
+                                    } else {
                                         System.out.println("Throw exception");
                                         throw FileNotFound;
                                     }
                                 } catch (Exception e) {
                                     String requestResultNo = "File not exist";
-                                    outStream.writeUTF(new JSONObject("{\"request\":\""+requestResultNo+"\",\"file\":\"0\"}").toString());
+                                    outStream.writeUTF(new JSONObject("{\"request\":\"" + requestResultNo + "\",\"file\":\"0\"}").toString());
                                     outStream.flush();
                                 }
                                 break;
@@ -80,9 +77,10 @@ public class Server {
                                 outStream.flush();
                         }
                     }
-                } catch (IOException e) {
+                }
+            } catch (IOException e) {
                 System.out.println(ServerMessages.MESSAGE_END);
-            }
+        }
     }
 }
 

@@ -3,6 +3,7 @@ import org.json.JSONObject;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class Server {
@@ -43,7 +44,8 @@ public class Server {
                             case Requests.getFile:
                                 try {
                                     System.out.println("Making file object name: "+jsonObject.getString("name"));
-                                    File f = new File(String.valueOf(Paths.get(jsonObject.getString("name"))));
+                                    File f = new File(new File(Server.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent()+"\\"+jsonObject.getString("name"));
+                                    System.out.println(f.getPath());
                                     if (f.exists()) {
                                         System.out.println("File exist. Sending response to client");
                                         outStream.writeUTF(new JSONObject("{\"request\":\"OK\",\"file\":\"" + f.length() + "\"}").toString());

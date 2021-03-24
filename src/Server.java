@@ -1,7 +1,10 @@
 import org.json.JSONObject;
+
+import javax.xml.crypto.dsig.spec.XPathType;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Filter;
 
 public class Server {
         private Socket clientSocket;
@@ -42,7 +45,7 @@ public class Server {
                             case Requests.getFile:
                                 try {
                                     System.out.println("Making file object name: " + jsonObject.getString("name"));
-                                    File f = new File(new File(Server.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent() + "/" + jsonObject.getString("name"));
+                                    File f = new File(jsonObject.getString("name"));
                                     System.out.println("Path: "+f.getPath());
                                     if (f.exists()) {
                                         System.out.println("File exist. Sending response to client");
